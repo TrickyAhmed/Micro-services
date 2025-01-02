@@ -1,0 +1,43 @@
+<div class="container mt-4">
+  <h2>{{ isEditMode ? 'Edit Student' : 'Add New Student' }}</h2>
+
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="alert alert-danger">
+    {{ error }}
+  </div>
+
+  <form [formGroup]="studentForm" (ngSubmit)="onSubmit()" *ngIf="!loading">
+    <div class="mb-3">
+      <label for="firstName" class="form-label">First Name</label>
+      <input type="text" class="form-control" id="firstName" formControlName="firstName">
+      <div *ngIf="studentForm.get('firstName')?.invalid && studentForm.get('firstName')?.touched" class="text-danger">
+        First name is required
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="lastName" class="form-label">Last Name</label>
+      <input type="text" class="form-control" id="lastName" formControlName="lastName">
+      <div *ngIf="studentForm.get('lastName')?.invalid && studentForm.get('lastName')?.touched" class="text-danger">
+        Last name is required
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" class="form-control" id="email" formControlName="email">
+      <div *ngIf="studentForm.get('email')?.invalid && studentForm.get('email')?.touched" class="text-danger">
+        <span *ngIf="studentForm.get('email')?.errors?.['required']">Email is required</span>
+        <span *ngIf="studentForm.get('email')?.errors?.['email']">Invalid email format</span>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary" [disabled]="studentForm.invalid">Save</button>
+    <a routerLink="/students" class="btn btn-secondary ms-2">Cancel</a>
+  </form>
+</div>
